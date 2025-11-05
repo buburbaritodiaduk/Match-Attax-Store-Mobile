@@ -1,4 +1,3 @@
-Berikut versi jawabannya dengan gaya mahasiswa:
 1. Widget treeDi Flutter, semua tampilan disusun dalam bentuk pohon yang disebut widget tree. Setiap elemen di layar adalah widget. Widget yang membungkus widget lain disebut parent, dan yang dibungkus disebut child. Misalnya, Scaffold jadi parent dari AppBar, Body, dan FloatingActionButton. Jadi hubungan antar widget itu kayak hirarki dari atas ke bawah.
 
 2. Widget yang gua pakai di proyek ini
