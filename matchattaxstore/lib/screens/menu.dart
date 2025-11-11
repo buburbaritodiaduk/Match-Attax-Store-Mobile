@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+// Impor file drawer dan form yang baru dibuat
+import 'package:matchattaxstore/widgets/left_drawer.dart';
+import 'package:matchattaxstore/screens/product_form.dart';
 
 class MyHomePage extends StatelessWidget {
   MyHomePage({super.key});
@@ -8,10 +11,12 @@ class MyHomePage extends StatelessWidget {
   final String kelas = "F";
 
   final List<ItemHomepage> items = [
-    ItemHomepage("All Products", Icons.storefront, Colors.blue),
-    ItemHomepage("My Products", Icons.shopping_bag, Colors.green),
-    ItemHomepage("Create Product", Icons.add_box, Colors.red),
+    ItemHomepage("All Products", Icons.storefront, Colors.grey[800]!), // Abu-abu gelap
+    ItemHomepage("My Products", Icons.shopping_bag, Colors.grey[700]!), // Abu-abu sedang
+    ItemHomepage("Create Product", Icons.add_box, Colors.black54), // Abu-abu/hitam
   ];
+
+// ... sisa kode menu.dart
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +30,12 @@ class MyHomePage extends StatelessWidget {
           ),
         ),
         backgroundColor: Theme.of(context).colorScheme.primary,
+        foregroundColor: Colors.white, // Tambahkan ini agar icon menu (hamburger) putih
       ),
+      
+      // TAMBAHKAN DRAWER DI SINI
+      drawer: const LeftDrawer(),
+      
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -128,6 +138,7 @@ class ItemCard extends StatelessWidget {
       child: InkWell(
         borderRadius: BorderRadius.circular(12),
         onTap: () {
+          // Tampilkan SnackBar
           ScaffoldMessenger.of(context)
             ..hideCurrentSnackBar()
             ..showSnackBar(
@@ -137,6 +148,18 @@ class ItemCard extends StatelessWidget {
                 duration: const Duration(seconds: 2),
               ),
             );
+
+          // TAMBAHKAN NAVIGASI DI SINI
+          if (item.name == "Create Product") {
+            // Gunakan Navigator.push
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const ProductFormPage(),
+              ),
+            );
+          }
+          // Anda bisa tambahkan else if untuk tombol lain nanti
         },
         child: Container(
           padding: const EdgeInsets.all(8),
