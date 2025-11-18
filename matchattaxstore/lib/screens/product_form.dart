@@ -1,7 +1,9 @@
-// Lokasi file: lib/screens/product_form.dart
-
+import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:matchattaxstore/widgets/left_drawer.dart'; // Pastikan path ini benar
+import 'package:pbp_django_auth/pbp_django_auth.dart';
+import 'package:provider/provider.dart';
+import 'package:matchattaxstore/screens/menu.dart';
+import 'package:matchattaxstore/widgets/left_drawer.dart';
 
 class ProductFormPage extends StatefulWidget {
   const ProductFormPage({super.key});
@@ -15,14 +17,13 @@ class _ProductFormPageState extends State<ProductFormPage> {
   
   // Variabel state untuk menampung data dari form
   String _name = "";
-  double _price = 0.0; // Diubah menjadi double (FloatField)
+  double _price = 0.0;
   String _description = "";
-  String _thumbnail = ""; // Ditambah
-  String _category = "base"; // Ditambah (default value dari model)
-  bool _isFeatured = false; // Ditambah
+  String _thumbnail = "";
+  String _category = "base"; 
+  bool _isFeatured = false; 
 
-  // Opsi untuk dropdown Kategori, sesuai CATEGORY_CHOICES di model
-  // Kita gunakan Map<String, String> untuk menyimpan 'value' dan 'display_name'
+  // Opsi untuk dropdown Kategori
   final Map<String, String> _categoryOptions = {
     'base': 'Base Card',
     'man_of_the_match': 'Man of the Match',
@@ -47,6 +48,9 @@ class _ProductFormPageState extends State<ProductFormPage> {
 
   @override
   Widget build(BuildContext context) {
+    // 1. Tambahkan CookieRequest di sini
+    final request = context.watch<CookieRequest>();
+
     return Scaffold(
       appBar: AppBar(
         title: const Center(
@@ -54,7 +58,6 @@ class _ProductFormPageState extends State<ProductFormPage> {
             'Create New Product',
           ),
         ),
-        // Menggunakan warna tema monokrom
         backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
         foregroundColor: Theme.of(context).appBarTheme.foregroundColor,
       ),
@@ -92,7 +95,7 @@ class _ProductFormPageState extends State<ProductFormPage> {
                   ),
                 ),
 
-                // Input Harga Produk (diubah ke double)
+                // Input Harga Produk
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: TextFormField(
@@ -114,7 +117,7 @@ class _ProductFormPageState extends State<ProductFormPage> {
                         return "Harga tidak boleh kosong!";
                       }
                       if (double.tryParse(value) == null) {
-                        return "Harga harus berupa angka (contoh: 50000.0)!";
+                        return "Harga harus berupa angka!";
                       }
                       if (double.tryParse(value)! <= 0) {
                         return "Harga harus lebih dari nol!";
@@ -135,7 +138,7 @@ class _ProductFormPageState extends State<ProductFormPage> {
                         borderRadius: BorderRadius.circular(5.0),
                       ),
                     ),
-                    maxLines: 3, // TextField di Django, jadi bisa multi-baris
+                    maxLines: 3,
                     onChanged: (String? value) {
                       setState(() {
                         _description = value!;
@@ -150,7 +153,7 @@ class _ProductFormPageState extends State<ProductFormPage> {
                   ),
                 ),
 
-                // BARU: Input URL Thumbnail
+                // Input URL Thumbnail
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: TextFormField(
@@ -170,7 +173,6 @@ class _ProductFormPageState extends State<ProductFormPage> {
                       if (value == null || value.isEmpty) {
                         return "URL Thumbnail tidak boleh kosong!";
                       }
-                      // Validasi format URL (sesuai permintaan tugas)
                       if (!_isValidUrl(value)) {
                         return "URL tidak valid (harus diawali http:// atau https://)";
                       }
@@ -179,7 +181,7 @@ class _ProductFormPageState extends State<ProductFormPage> {
                   ),
                 ),
 
-                // BARU: Input Kategori (Dropdown)
+                // Input Kategori
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: DropdownButtonFormField<String>(
@@ -189,11 +191,11 @@ class _ProductFormPageState extends State<ProductFormPage> {
                         borderRadius: BorderRadius.circular(5.0),
                       ),
                     ),
-                    value: _category, // Nilai default
+                    value: _category,
                     items: _categoryOptions.entries.map((entry) {
                       return DropdownMenuItem<String>(
-                        value: entry.key, // 'base'
-                        child: Text(entry.value), // 'Base Card'
+                        value: entry.key,
+                        child: Text(entry.value),
                       );
                     }).toList(),
                     onChanged: (String? newValue) {
@@ -204,7 +206,7 @@ class _ProductFormPageState extends State<ProductFormPage> {
                   ),
                 ),
 
-                // BARU: Input Is Featured (Switch)
+                // Input Is Featured
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: SwitchListTile(
@@ -215,63 +217,54 @@ class _ProductFormPageState extends State<ProductFormPage> {
                         _isFeatured = value;
                       });
                     },
-                    // Atur warna switch agar sesuai tema monokrom
                     activeColor: Theme.of(context).colorScheme.secondary,
                   ),
                 ),
 
-                // Tombol Save
+                // Tombol Save (UPDATED)
                 Align(
                   alignment: Alignment.bottomCenter,
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: ElevatedButton(
-                      // Menggunakan style dari tema
                       style: Theme.of(context).elevatedButtonTheme.style,
-                      onPressed: () {
+                      onPressed: () async {
                         if (_formKey.currentState!.validate()) {
-                          // Tampilkan pop-up dengan SEMUA data
-                          showDialog(
-                            context: context,
-                            builder: (context) {
-                              return AlertDialog(
-                                title: const Text('Produk berhasil tersimpan'),
-                                content: SingleChildScrollView(
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text('Nama: $_name'),
-                                      Text('Harga: $_price'),
-                                      Text('Deskripsi: $_description'),
-                                      Text('Thumbnail: $_thumbnail'),
-                                      Text('Kategori: $_category'),
-                                      Text('Unggulan: ${_isFeatured ? "Ya" : "Tidak"}'),
-                                    ],
-                                  ),
-                                ),
-                                actions: [
-                                  TextButton(
-                                    child: const Text('OK'),
-                                    onPressed: () {
-                                      Navigator.pop(context);
-                                    },
-                                  ),
-                                ],
-                              );
-                            },
+                          
+                          // Kirim ke Django dan tunggu respons
+                          // GANTI URL: Gunakan http://10.0.2.2:8000/create-flutter/ jika pakai Android Emulator
+                          // Gunakan http://127.0.0.1:8000/create-flutter/ jika pakai Chrome
+                          final response = await request.postJson(
+                            "http://127.0.0.1:8000/create-flutter/",
+                            jsonEncode({
+                              "name": _name,
+                              "price": _price.toInt(), // Pastikan Django terima Integer, hapus .toInt() jika butuh Double
+                              "description": _description,
+                              "thumbnail": _thumbnail,
+                              "category": _category,
+                              "is_featured": _isFeatured,
+                            }),
                           );
                           
-                          // Reset form
-                          _formKey.currentState!.reset();
-                          // Reset state variabel ke default
-                          setState(() {
-                             _name = "";
-                             _price = 0.0;
-                             _description = "";
-                             _thumbnail = "";
-                             _category = "base";
-                             _isFeatured = false;
-                          });
+                          if (context.mounted) {
+                            if (response['status'] == 'success') {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text("Product successfully saved!"),
+                                ),
+                              );
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(builder: (context) => MyHomePage()),
+                              );
+                            } else {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text("Something went wrong, please try again."),
+                                ),
+                              );
+                            }
+                          }
                         }
                       },
                       child: const Text(

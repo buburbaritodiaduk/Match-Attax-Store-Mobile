@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 // Impor file drawer dan form yang baru dibuat
 import 'package:matchattaxstore/widgets/left_drawer.dart';
-import 'package:matchattaxstore/screens/product_form.dart';
+import 'package:matchattaxstore/widgets/product_card.dart';
 
 class MyHomePage extends StatelessWidget {
   MyHomePage({super.key});
@@ -11,9 +11,9 @@ class MyHomePage extends StatelessWidget {
   final String kelas = "F";
 
   final List<ItemHomepage> items = [
-    ItemHomepage("All Products", Icons.storefront, Colors.grey[800]!), // Abu-abu gelap
-    ItemHomepage("My Products", Icons.shopping_bag, Colors.grey[700]!), // Abu-abu sedang
-    ItemHomepage("Create Product", Icons.add_box, Colors.black54), // Abu-abu/hitam
+    ItemHomepage("All Products", Icons.storefront),
+    ItemHomepage("My Products", Icons.shopping_bag),
+    ItemHomepage("Create Product", Icons.add_box),
   ];
 
 // ... sisa kode menu.dart
@@ -111,79 +111,6 @@ class InfoCard extends StatelessWidget {
             const SizedBox(height: 8.0),
             Text(content),
           ],
-        ),
-      ),
-    );
-  }
-}
-
-class ItemHomepage {
-  final String name;
-  final IconData icon;
-  final Color color;
-
-  ItemHomepage(this.name, this.icon, this.color);
-}
-
-class ItemCard extends StatelessWidget {
-  final ItemHomepage item;
-
-  const ItemCard(this.item, {super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Material(
-      color: item.color,
-      borderRadius: BorderRadius.circular(12),
-      child: InkWell(
-        borderRadius: BorderRadius.circular(12),
-        onTap: () {
-          // Tampilkan SnackBar
-          ScaffoldMessenger.of(context)
-            ..hideCurrentSnackBar()
-            ..showSnackBar(
-              SnackBar(
-                content:
-                    Text("Kamu telah menekan tombol ${item.name}!"),
-                duration: const Duration(seconds: 2),
-              ),
-            );
-
-          // TAMBAHKAN NAVIGASI DI SINI
-          if (item.name == "Create Product") {
-            // Gunakan Navigator.push
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const ProductFormPage(),
-              ),
-            );
-          }
-          // Anda bisa tambahkan else if untuk tombol lain nanti
-        },
-        child: Container(
-          padding: const EdgeInsets.all(8),
-          child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(
-                  item.icon,
-                  color: Colors.white,
-                  size: 32.0,
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  item.name,
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              ],
-            ),
-          ),
         ),
       ),
     );

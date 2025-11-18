@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:matchattaxstore/screens/menu.dart';
-import 'package:matchattaxstore/screens/product_form.dart'; // Nanti kita buat file ini
+import 'package:matchattaxstore/screens/product_form.dart';
+import 'package:matchattaxstore/screens/product_entry_list.dart';
 
 class LeftDrawer extends StatelessWidget {
   const LeftDrawer({super.key});
@@ -42,7 +43,6 @@ class LeftDrawer extends StatelessWidget {
             leading: const Icon(Icons.home_outlined),
             title: const Text('Home'),
             onTap: () {
-              // Navigasi ke halaman utama
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
@@ -55,12 +55,22 @@ class LeftDrawer extends StatelessWidget {
             leading: const Icon(Icons.add_box),
             title: const Text('Create Product'),
             onTap: () {
-              // Navigasi ke halaman form
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => const ProductFormPage(), // Arahkan ke form
+                  builder: (context) => const ProductFormPage(),
                 ),
+              );
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.add_reaction_rounded),
+            title: const Text('Product List'),
+            onTap: () {
+              // Route to product list page
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const ProductEntryListPage()),
               );
             },
           ),
