@@ -248,14 +248,50 @@ class _ProductFormPageState extends State<ProductFormPage> {
                           
                           if (context.mounted) {
                             if (response['status'] == 'success') {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  content: Text("Product successfully saved!"),
-                                ),
-                              );
-                              Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(builder: (context) => MyHomePage()),
+                              // Tampilkan pop-up dialog dengan data produk yang disimpan
+                              showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return AlertDialog(
+                                    title: const Text('Produk Berhasil Disimpan!'),
+                                    content: SingleChildScrollView(
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          const Text(
+                                            'Data produk yang disimpan:',
+                                            style: TextStyle(fontWeight: FontWeight.bold),
+                                          ),
+                                          const SizedBox(height: 12),
+                                          Text('Nama: $_name'),
+                                          const SizedBox(height: 8),
+                                          Text('Harga: \$${_price.toInt()}'),
+                                          const SizedBox(height: 8),
+                                          Text('Deskripsi: $_description'),
+                                          const SizedBox(height: 8),
+                                          Text('Thumbnail: $_thumbnail'),
+                                          const SizedBox(height: 8),
+                                          Text('Kategori: ${_categoryOptions[_category]}'),
+                                          const SizedBox(height: 8),
+                                          Text('Featured: ${_isFeatured ? "Ya" : "Tidak"}'),
+                                        ],
+                                      ),
+                                    ),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.pop(context); // Tutup dialog
+                                          Navigator.pushReplacement(
+                                            context,
+                                            MaterialPageRoute(builder: (context) => MyHomePage()),
+                                          );
+                                        },
+                                        child: const Text('OK'),
+                                      ),
+                                    ],
+                                  );
+                                },
                               );
                             } else {
                               ScaffoldMessenger.of(context).showSnackBar(

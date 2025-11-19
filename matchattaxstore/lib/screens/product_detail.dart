@@ -18,8 +18,6 @@ class ProductDetailPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Product Detail'),
-        backgroundColor: Colors.indigo,
-        foregroundColor: Colors.white,
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -53,7 +51,7 @@ class ProductDetailPage extends StatelessWidget {
                           horizontal: 12.0, vertical: 6.0),
                       margin: const EdgeInsets.only(bottom: 12.0),
                       decoration: BoxDecoration(
-                        color: Colors.amber,
+                        color: Colors.grey[700],
                         borderRadius: BorderRadius.circular(20.0),
                       ),
                       child: const Text(
@@ -61,6 +59,7 @@ class ProductDetailPage extends StatelessWidget {
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 12,
+                          color: Colors.white,
                         ),
                       ),
                     ),
@@ -82,7 +81,7 @@ class ProductDetailPage extends StatelessWidget {
                         padding: const EdgeInsets.symmetric(
                             horizontal: 10.0, vertical: 4.0),
                         decoration: BoxDecoration(
-                          color: Colors.indigo.shade100,
+                          color: Colors.grey[200],
                           borderRadius: BorderRadius.circular(12.0),
                         ),
                         child: Text(
@@ -90,7 +89,7 @@ class ProductDetailPage extends StatelessWidget {
                           style: TextStyle(
                             fontSize: 12,
                             fontWeight: FontWeight.bold,
-                            color: Colors.indigo.shade700,
+                            color: Colors.grey[800],
                           ),
                         ),
                       ),
@@ -116,7 +115,7 @@ class ProductDetailPage extends StatelessWidget {
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
-                          color: Colors.green[600],
+                          color: Colors.grey[800],
                         ),
                       ),
                     ],
@@ -134,6 +133,23 @@ class ProductDetailPage extends StatelessWidget {
                     textAlign: TextAlign.justify,
                   ),
                   const SizedBox(height: 24),
+
+                  // Tombol kembali ke daftar produk
+                  Center(
+                    child: ElevatedButton.icon(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      icon: const Icon(Icons.arrow_back),
+                      label: const Text('Kembali ke Daftar Produk'),
+                      style: ElevatedButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 24.0,
+                          vertical: 12.0,
+                        ),
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ),

@@ -59,10 +59,10 @@ class ProductEntryCard extends StatelessWidget {
                 // Price
                 Text(
                   '\$${product.price}',
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 16.0,
                     fontWeight: FontWeight.w600,
-                    color: Colors.green,
+                    color: Colors.grey[800],
                   ),
                 ),
                 const SizedBox(height: 6),
@@ -84,10 +84,10 @@ class ProductEntryCard extends StatelessWidget {
 
                 // Featured indicator
                 if (product.isFeatured)
-                  const Text(
+                  Text(
                     'Featured',
                     style: TextStyle(
-                      color: Colors.amber,
+                      color: Colors.grey[700],
                       fontWeight: FontWeight.bold
                     ),
                   ),

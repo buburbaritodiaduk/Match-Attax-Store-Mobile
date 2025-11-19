@@ -147,7 +147,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(
                                     content: Text('Successfully registered! Please login.'),
-                                    backgroundColor: Colors.green,
+                                    backgroundColor: Colors.grey,
                                   ),
                                 );
                                 // Pindah ke halaman Login
@@ -161,7 +161,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(
                                     content: Text(response['message'] ?? 'Registration failed!'),
-                                    backgroundColor: Colors.red,
+                                    backgroundColor: Colors.grey[800],
                                   ),
                                 );
                               }

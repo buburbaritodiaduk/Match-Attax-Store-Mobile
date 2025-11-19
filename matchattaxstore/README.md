@@ -1,3 +1,4 @@
+
 1. Jelaskan mengapa kita perlu membuat model Dart saat mengambil/mengirim data JSON? Apa konsekuensinya jika langsung memetakan Map<String, dynamic> tanpa model (terkait validasi tipe, null-safety, maintainability)?
 
 Kita perlu membuat Model Dart (berupa class dengan constructor dan factory) saat mengambil atau mengirim data JSON untuk menjaga kualitas kode.

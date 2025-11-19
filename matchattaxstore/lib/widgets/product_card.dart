@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:matchattaxstore/screens/login.dart';
 import 'package:matchattaxstore/screens/product_form.dart';
 import 'package:matchattaxstore/screens/product_entry_list.dart'; // Pastikan import ini ada
+import 'package:matchattaxstore/screens/my_products.dart'; // Import halaman My Products
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
 
@@ -48,6 +49,15 @@ class ItemCard extends StatelessWidget {
                 context,
                 MaterialPageRoute(
                   builder: (context) => const ProductEntryListPage(),
+                ));
+          }
+          
+          // Navigasi ke My Products
+          else if (item.name == "My Products") {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const MyProductsPage(),
                 ));
           }
           
